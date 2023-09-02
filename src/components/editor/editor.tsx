@@ -7,6 +7,7 @@ import { Extension } from "@codemirror/state"
 import { useHotkeys } from "react-hotkeys-hook"
 import { invoke } from "@tauri-apps/api/tauri"
 import { writeTextFile } from "@tauri-apps/plugin-fs"
+import { ScrollArea } from "../ui/scroll-area"
 
 export interface EditorProps {
 	uuid: string // UUID
@@ -61,12 +62,15 @@ export function Editor({
 	}, [])
 
 	return (
-		<CodeMirror
-			value={content ?? savedContent}
-			extensions={extensions}
-			theme={tokyoNight}
-			onChange={onChange}
-			placeholder="Start typing..."
-		/>
+		<ScrollArea className="flex flex-row w-full h-full">
+			<CodeMirror
+				value={content ?? savedContent}
+				extensions={extensions}
+				theme={tokyoNight}
+				onChange={onChange}
+				className="mb-10"
+				placeholder="Start typing..."
+			/>
+		</ScrollArea>
 	)
 }
