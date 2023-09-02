@@ -11,12 +11,16 @@ Pull Requests are currently not going to be accepted.
 - [x] Directory listing
 - [x] Basic file editor
 - [x] File association / syntax highlighting
+- [ ] Move editor data into Rust
 - [ ] Intellisense / language servers
 - [ ] Settings page
 - [ ] Version Control
 - [ ] ...
 - [ ] Themes??
 - [ ] Extensions??
+
+## Todo
+- [ ] Update github workflows to gitlab format
 
 ## Bugs
 - Editor tabs do not update unless you switch to a different tab.
