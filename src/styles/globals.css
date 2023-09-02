@@ -86,9 +86,3 @@
       "calt" 1;
   }
 }
-
-/* CodeMirror */
-.cm-theme,
-.cm-editor {
-  height: 100%;
-}

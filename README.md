@@ -22,3 +22,4 @@ Pull Requests are currently not going to be accepted.
 - Editor tabs do not update unless you switch to a different tab.
 - Unable to save files that were not on disk previously. (Not Implemented)
 - TypeScript / JavaScript highlighting breaks if you don't add semicolons to the end of each line.
+- Code editor has 2-ish lines off-screen that cannot be seen (end of file).
