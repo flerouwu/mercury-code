@@ -7,6 +7,7 @@ import { DirectoryProps, FileCard, FolderCard } from "./file-cards"
 import { TooltipProvider } from "../ui/tooltip"
 import { FileEntry, readDir } from "@tauri-apps/plugin-fs"
 import { ScrollArea } from "../ui/scroll-area"
+import { tauriCommands, useTauri } from "@/hooks/use-tauri"
 
 export const mapAndSortFiles = (files: FileEntry[]): DirectoryProps[] => {
   return files
@@ -26,17 +27,14 @@ export const mapAndSortFiles = (files: FileEntry[]): DirectoryProps[] => {
 }
 
 export function FilesSidebar() {
-  const [currentFolder, setCurrentFolder] = useState<string | null>(null)
+  const { data: folder } = useTauri<string | null>(tauriCommands.openFolder)
 
-  useEffect(() => {
-    invoke("get_open_folder").then((res) => setCurrentFolder(res as string))
-  }, [])
-
-  if (currentFolder == null) return <ChooseFolder onSelect={(folder) => setCurrentFolder(folder)} />
-  else return <FileList folder={currentFolder} />
+  if (folder == null) return <ChooseFolder />
+  else return <FileList />
 }
 
-function FileList({ folder }: { folder: string }) {
+function FileList() {
+  const { data: folder } = useTauri<string | null>(tauriCommands.openFolder)
   const [files, setFiles] = useState<DirectoryProps[]>([])
 
   useEffect(() => {
@@ -47,11 +45,11 @@ function FileList({ folder }: { folder: string }) {
         return
       }
 
-      readDir(folder, { recursive: false }).then((files) => {
+      readDir(folder!!, { recursive: false }).then((files) => {
         setFiles(mapAndSortFiles(files))
       })
     })
-  }, [])
+  }, [folder])
 
   return (
     <TooltipProvider>
@@ -68,7 +66,7 @@ function FileList({ folder }: { folder: string }) {
   )
 }
 
-function ChooseFolder({ onSelect }: { onSelect: (folder: string) => void }) {
+function ChooseFolder() {
   return (
     <div className="flex flex-col items-center p-4">
       <h3 className="text-xl font-semibold">No Workspace</h3>
@@ -78,7 +76,7 @@ function ChooseFolder({ onSelect }: { onSelect: (folder: string) => void }) {
         <Button
           variant="secondary"
           onClick={() => {
-            invoke("open_folder").then((folder) => onSelect(folder as string))
+            invoke("open_folder") // result is handled by events
           }}
         >
           Open Folder

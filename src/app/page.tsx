@@ -5,49 +5,45 @@ import { EditorTab } from "@/components/editor/tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { tauriCommands, useTauri } from "@/hooks/use-tauri"
+import { invoke } from "@tauri-apps/api/tauri"
 import { Plus } from "lucide-react"
-import { useCallback, useContext } from "react"
-import { v4 as uuid } from "uuid"
-import { CurrentEditorContext, EditorsContext } from "./providers"
+import { useCallback } from "react"
 
 export default function App() {
-  const { editors, setEditors } = useContext(EditorsContext)
-  const { currentEditor, setCurrentEditor } = useContext(CurrentEditorContext)
-
-  const onEditorUpdate = useCallback((editor: EditorProps) => {
-    editors[editor.uuid] = editor
-    setEditors(editors)
-  }, [])
+  const { data: editors, setData: setEditors, updateData: updateEditors, dispatchData: dispatchEditors } = useTauri<EditorProps[]>(tauriCommands.allEditors)
+  const { data: current, setData: setCurrent, updateData: updateCurrent, dispatchData: dispatchCurrent } = useTauri<string | null>(tauriCommands.currentEditor)
 
   return (
     <TooltipProvider>
-      <Tabs value={currentEditor ?? "mercury:get-started"} className="w-full h-full">
+      <Tabs className="w-full h-full">
         <TabsList className="justify-start w-full border-b rounded-none">
           <Button
             variant="ghost"
             size="icon"
             className="mr-1"
             onClick={() => {
-              const newEditor = {
-                uuid: uuid(),
-                name: "Untitled",
-                needsToSave: true,
-              }
+              invoke<EditorProps>("editors_new", { name: "Untitled" }).then((editor) => {
+                updateEditors()
 
-              editors[newEditor.uuid] = newEditor
-              setEditors(editors)
-              setCurrentEditor(newEditor.uuid)
+                console.log("New Editor: ", editor);
+                setCurrent(editor.uuid)
+                dispatchCurrent(editor.uuid) // Dispatch to Tauri
+              })
             }}
           >
             <Plus />
           </Button>
 
-          <TabsTrigger value="mercury:get-started" onClick={() => setCurrentEditor(null)}>
+          <TabsTrigger value="mercury:get-started" onClick={() => {
+            setCurrent(null)
+            dispatchCurrent(null)
+          }}>
             Getting Started
           </TabsTrigger>
 
-          {Object.values(editors).map((editor) => (
-            <EditorTab editor={editor} setCurrentEditor={setCurrentEditor} />
+          {Object.values(editors ?? []).map((editor) => (
+            <EditorTab editor={editor} />
           ))}
         </TabsList>
 
@@ -58,9 +54,9 @@ export default function App() {
           </main>
         </TabsContent>
 
-        {Object.values(editors).map((editor) => (
+        {Object.values(editors ?? []).map((editor) => (
           <TabsContent key={editor.uuid} value={editor.uuid} className="h-full mt-0">
-            <Editor {...editor} onUpdate={onEditorUpdate} />
+            <Editor {...editor} />
           </TabsContent>
         ))}
       </Tabs>

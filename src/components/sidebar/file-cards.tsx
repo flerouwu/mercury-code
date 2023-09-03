@@ -7,7 +7,7 @@ import { mapAndSortFiles } from "./files"
 import { EditorProps } from "../editor/editor"
 import { v4 } from "uuid"
 import { invoke } from "@tauri-apps/api/tauri"
-import { CurrentEditorContext, EditorsContext } from "@/app/providers"
+import { tauriCommands, useTauri } from "@/hooks/use-tauri"
 
 export interface FileProps {
   name: string
@@ -19,8 +19,8 @@ export interface DirectoryProps extends FileProps {
 }
 
 export function FileCard({ name, location }: FileProps) {
-  const { editors, setEditors } = useContext(EditorsContext)
-  const { setCurrentEditor } = useContext(CurrentEditorContext)
+  const { data: editors, setData: setEditors, dispatchData: dispatchEditors } = useTauri<EditorProps[]>(tauriCommands.allEditors)
+  const { data: current, setData: setCurrent, updateData: updateCurrent, dispatchData: dispatchCurrent } = useTauri<string | null>(tauriCommands.currentEditor)
 
   const icon =
     ICONS.find((icon) => icon.extensions.map((reg) => reg.test(name)).filter((v) => v == true).length > 0) ||
@@ -29,20 +29,9 @@ export function FileCard({ name, location }: FileProps) {
   return (
     <li className="list-none">
       <button className="w-full p-1 pl-2 text-left hover:bg-accent" onClick={() => {
-        const editor: EditorProps = {
-          uuid: v4(),
-          name: name,
-          path: location,
-          needsToSave: false,
-        }
-
-        // Read content from disk
-        readTextFile(location).then((contents) => {
-          editor.savedContent = contents
-
-          editors[editor.uuid] = editor
-          setEditors(editors)
-          setCurrentEditor(editor.uuid)
+        invoke<EditorProps>("editors_from_file", { path: location }).then((editor) => {
+          setCurrent(editor.uuid)
+          dispatchCurrent()
         })
       }}>
         <Tooltip>

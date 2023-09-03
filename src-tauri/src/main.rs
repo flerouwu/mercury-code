@@ -1,28 +1,14 @@
 // Prevents additional console window on Windows in release
 #![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
+all(not(debug_assertions), target_os = "windows"),
+windows_subsystem = "windows"
 )]
 
-use std::path::PathBuf;
 use std::sync::Mutex;
-use tauri_plugin_fs::FsExt;
+use crate::commands::{cmd, editors};
+use crate::commands::editors::EditorState;
 
-mod cmd;
-
-pub(crate) struct EditorState {
-    pub open_folder: Mutex<Option<PathBuf>>,
-    pub open_files: Mutex<Vec<PathBuf>>,
-}
-
-impl EditorState {
-    pub(crate) fn default() -> EditorState {
-        EditorState {
-            open_folder: Mutex::new(None),
-            open_files: Mutex::new(vec![]),
-        }
-    }
-}
+mod commands;
 
 fn main() {
     let app = tauri::Builder::default()
@@ -35,7 +21,7 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
 
         // States
-        .manage(EditorState::default())
+        .manage(Mutex::new(EditorState::default()))
 
         // Commands
         .invoke_handler(tauri::generate_handler![
@@ -43,6 +29,15 @@ fn main() {
             cmd::open_folder,
             cmd::close_folder,
             cmd::allow_fs_scope,
+
+            editors::editors_new,
+            editors::editors_from_file,
+            editors::editors_get_all,
+            editors::editors_set_all,
+            editors::editors_get_current,
+            editors::editors_set_current,
+            editors::editors_save_editor,
+            editors::editors_update_editor,
         ])
 
         // Run
