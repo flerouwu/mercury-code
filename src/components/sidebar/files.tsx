@@ -41,7 +41,6 @@ function FileList() {
     console.log("Trying to allow fs scope to " + folder)
     invoke("allow_fs_scope", { path: folder }).then((success) => {
       if (success == false) {
-        alert("Unable to allow fs scope!")
         return
       }
 
@@ -82,7 +81,7 @@ function ChooseFolder() {
           Open Folder
         </Button>
 
-        <Button variant="secondary" onClick={() => alert("Doesn't do anything!")}>
+        <Button variant="secondary">
           Open File
         </Button>
       </div>

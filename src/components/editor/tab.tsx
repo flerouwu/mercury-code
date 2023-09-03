@@ -59,7 +59,7 @@ export function EditorTab({
 								<Button variant="ghost" onClick={() => setDialogOpen(false)}>
 									Cancel
 								</Button>
-								<Button onClick={() => alert("Not implemented!")}>Save</Button>
+								<Button>Save</Button>
 								<Button
 									variant="destructive"
 									onClick={closeTab}
