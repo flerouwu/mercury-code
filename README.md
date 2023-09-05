@@ -24,5 +24,6 @@ Pull Requests are currently not going to be accepted.
 
 ## Bugs
 - Unable to save files that were not on disk previously. (Not Implemented)
-- ~~TypeScript / JavaScript highlighting breaks if you don't add semicolons to the end of each line.~~
-  - all syntax highlighting is currently in c++
+
+- editor doesn't take up all available vertical space
+- editor tabs don't switch immediately after creation

@@ -31,7 +31,7 @@ export function FileCard({ name, location }: FileProps) {
       <button className="w-full p-1 pl-2 text-left hover:bg-accent" onClick={() => {
         invoke<EditorProps>("editors_from_file", { path: location }).then((editor) => {
           setCurrent(editor.uuid)
-          dispatchCurrent()
+          dispatchCurrent(editor.uuid)
         })
       }}>
         <Tooltip>

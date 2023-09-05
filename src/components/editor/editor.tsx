@@ -32,11 +32,12 @@ export function Editor({
 
 	// #region Language Detection
 	// TODO: Use regex? to detect language based on content, rather than file name.
-	const filename = path?.split("/").findLast(() => true)
+	const filename = path?.split("/").pop(); // Use pop() to get the last part of the path
 	const language = filename
 		? FILE_ASSOCIATIONS.find((assoc) =>
-			assoc.extensions.map((ext) => ext.test(filename)).length > 0)
-		: undefined
+				assoc.extensions.some((ext) => ext.test(filename))
+			)
+		: undefined;
 
 	const extensions: Extension[] = []
 	if (language != undefined) extensions.push(language.language)
