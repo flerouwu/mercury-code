@@ -12,12 +12,12 @@ Pull Requests are currently not going to be accepted.
 - [x] Basic file editor
 - [x] File association / syntax highlighting
 - [x] Move editor data into Rust
-- [ ] Intellisense / language servers
 - [ ] Settings page
+- [ ] Extensions??
+- [ ] Intellisense / language servers
 - [ ] Version Control
 - [ ] ...
 - [ ] Themes??
-- [ ] Extensions??
 
 ## Todo
 - [ ] Update github workflows to gitlab format
