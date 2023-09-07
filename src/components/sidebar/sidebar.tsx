@@ -1,13 +1,14 @@
 "use client"
 
-import { Files, GitBranch, LucideIcon, Settings2, UserCircle2 } from "lucide-react"
+import { FilePlus, Files, FolderPlus, GitBranch, LucideIcon, Settings2, UserCircle2 } from "lucide-react"
 import React, { useState } from "react"
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "./ui/navigation-menu"
-import { Button } from "./ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "../ui/navigation-menu"
+import { Button } from "../ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { cn } from "@/lib/utils"
 import { invoke } from "@tauri-apps/api/tauri"
-import { FilesSidebar } from "./sidebar/files"
+import { FilesSidebar, FilesSidebar_NewFile, FilesSidebar_NewFolder } from "./files"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 
 interface SidebarMenu {
   top: SidebarItem[]
@@ -19,6 +20,8 @@ interface SidebarItem {
   name: string
   hotkey?: string
   content: JSX.Element
+  /** Elements that are shown next to the title of the item. */
+  additionalItems?: JSX.Element[]
 }
 
 const items: SidebarMenu = {
@@ -27,6 +30,10 @@ const items: SidebarMenu = {
       icon: Files,
       name: "Files",
       content: <FilesSidebar />,
+      additionalItems: [
+        <FilesSidebar_NewFile />,
+        <FilesSidebar_NewFolder />
+      ]
     },
     {
       icon: GitBranch,
@@ -102,8 +109,13 @@ export function Sidebar() {
 
       {/* Page */}
       <div className={cn(activePage == null ? "w-0" : "w-64 border-r", "ease-in-out duration-500")}>
-        <header className="flex flex-row items-center h-10 gap-1 p-2 border-b">
-          {activePage && <activePage.icon size={18} strokeWidth={3} />} {activePage?.name}
+        <header className="flex flex-row items-center justify-between h-10 p-2 border-b">
+          <span className="flex flex-row items-center gap-1">
+            {activePage && <activePage.icon size={18} strokeWidth={3} />} {activePage?.name}
+          </span>
+          <span className="flex flex-row items-center gap-1">
+            {activePage && activePage.additionalItems}
+          </span>
         </header>
 
         {activePage?.content}

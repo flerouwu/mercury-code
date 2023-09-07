@@ -4,10 +4,10 @@ import { Metadata } from "next"
 import { fontMono, fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Titlebar } from "@/components/titlebar"
-import { StyleSwitcher } from "@/components/sidebar/style-switcher"
+import { StyleSwitcher } from "@/components/style-switcher"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Sidebar } from "@/components/sidebar"
+import { Sidebar } from "@/components/sidebar/sidebar"
 import { Toaster } from "@/components/ui/toaster"
 
 interface ExamplesLayoutProps {
