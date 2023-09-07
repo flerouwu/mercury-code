@@ -5,6 +5,7 @@ windows_subsystem = "windows"
 )]
 
 use std::sync::Mutex;
+use tauri_plugin_store::StoreBuilder;
 use crate::commands::{cmd, editors};
 use crate::commands::editors::EditorState;
 
@@ -19,6 +20,7 @@ fn main() {
         .plugin(tauri_plugin_window::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
+        //.plugin(tauri_plugin_store::Builder::default().build())
 
         // States
         .manage(Mutex::new(EditorState::default()))
@@ -39,6 +41,13 @@ fn main() {
             editors::editors_save_editor,
             editors::editors_update_editor,
         ])
+
+        // Setup
+        /*.setup(|app| {
+            let mut store = StoreBuilder::new(app.handle(), "uwu".parse()?).build();
+
+            ()
+        })*/
 
         // Run
         .build(tauri::generate_context!())

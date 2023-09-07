@@ -27,3 +27,5 @@ Pull Requests are currently not going to be accepted.
 
 - editor doesn't take up all available vertical space
 - editor tabs don't switch immediately after creation
+
+- cannot save editor
