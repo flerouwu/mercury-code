@@ -7,6 +7,7 @@ import { TabsTrigger } from "../ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { EditorProps } from "./editor"
 import { useLog } from "@/hooks/use-log"
+import { useToast } from "../ui/use-toast"
 
 export function EditorTab({
 	editor,
@@ -16,6 +17,7 @@ export function EditorTab({
 	const { data: editors, setData: setEditors, updateData: updateEditors, dispatchData: dispatchEditors } = useTauri<EditorProps[]>(tauriCommands.allEditors)
 	const { data: current, setData: setCurrent, dispatchData: dispatchCurrent } = useTauri<string | null>(tauriCommands.currentEditor)
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+	const { toast } = useToast()
 
 	/// Function to edit values and close tabs
 	const closeTab = useCallback(() => {
@@ -59,7 +61,11 @@ export function EditorTab({
 								<Button variant="ghost" onClick={() => setDialogOpen(false)}>
 									Cancel
 								</Button>
-								<Button>Save</Button>
+								<Button onClick={() => toast({
+										title: "Not Implemented",
+										description: "You cannot save files that weren't on disk previously.",
+										variant: "destructive",
+									})}>Save</Button>
 								<Button
 									variant="destructive"
 									onClick={closeTab}

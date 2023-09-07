@@ -8,6 +8,7 @@ import { TooltipProvider } from "../ui/tooltip"
 import { FileEntry, readDir } from "@tauri-apps/plugin-fs"
 import { ScrollArea } from "../ui/scroll-area"
 import { tauriCommands, useTauri } from "@/hooks/use-tauri"
+import { useToast } from "../ui/use-toast"
 
 export const mapAndSortFiles = (files: FileEntry[]): DirectoryProps[] => {
   return files
@@ -66,6 +67,8 @@ function FileList() {
 }
 
 function ChooseFolder() {
+  const { toast } = useToast()
+
   return (
     <div className="flex flex-col items-center p-4">
       <h3 className="text-xl font-semibold">No Workspace</h3>
@@ -81,7 +84,11 @@ function ChooseFolder() {
           Open Folder
         </Button>
 
-        <Button variant="secondary">
+        <Button variant="secondary" onClick={() => toast({
+          title: "Not Implemented",
+          description: "You cannot load individual files yet.",
+          variant: "destructive",
+        })}>
           Open File
         </Button>
       </div>

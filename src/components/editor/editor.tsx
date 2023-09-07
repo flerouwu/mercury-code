@@ -8,6 +8,7 @@ import { useCallback, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { ScrollArea } from "../ui/scroll-area"
 import { useTheme } from "next-themes"
+import { useToast } from "../ui/use-toast"
 
 export interface EditorProps {
 	uuid: string // UUID
@@ -24,9 +25,17 @@ export function Editor({
 	content,
 	unsaved,
 }: EditorProps) {
+	const { toast } = useToast()
+
 	// #region Hotkeys
 	useHotkeys("ctrl+s", () => {
-		invoke("editors_save_current")
+		invoke("editors_save_current").catch((err) => {
+			toast({
+				title: "Error Saving Editor",
+				description: err,
+				variant: "destructive",
+			})
+		})
 	}, { preventDefault: true }, [])
 	// #endregion
 

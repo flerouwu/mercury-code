@@ -5,6 +5,7 @@ import { EditorTab } from "@/components/editor/tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { useToast } from "@/components/ui/use-toast"
 import { tauriCommands, useTauri } from "@/hooks/use-tauri"
 import { invoke } from "@tauri-apps/api/tauri"
 import { Plus } from "lucide-react"
@@ -13,6 +14,7 @@ import { useCallback } from "react"
 export default function App() {
   const { data: editors, setData: setEditors, updateData: updateEditors, dispatchData: dispatchEditors } = useTauri<EditorProps[]>(tauriCommands.allEditors)
   const { data: current, setData: setCurrent, updateData: updateCurrent, dispatchData: dispatchCurrent } = useTauri<string | null>(tauriCommands.currentEditor)
+  const { toast } = useToast()
 
   return (
     <TooltipProvider>
@@ -29,6 +31,12 @@ export default function App() {
                 console.log("New Editor: ", editor);
                 setCurrent(editor.uuid)
                 dispatchCurrent(editor.uuid) // Dispatch to Tauri
+              }).catch((err) => {
+                toast({
+                  title: "Error Creating New Editor",
+                  description: err,
+                  variant: "destructive",
+                })
               })
             }}
           >

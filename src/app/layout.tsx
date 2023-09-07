@@ -8,6 +8,7 @@ import { StyleSwitcher } from "@/components/sidebar/style-switcher"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Sidebar } from "@/components/sidebar"
+import { Toaster } from "@/components/ui/toaster"
 
 interface ExamplesLayoutProps {
   children: React.ReactNode
@@ -34,6 +35,8 @@ export default function MyApp({ children }: ExamplesLayoutProps) {
               {children}
             </div>
           </div>
+
+          <Toaster />
           <TailwindIndicator />
         </ThemeProvider>
         <StyleSwitcher />
