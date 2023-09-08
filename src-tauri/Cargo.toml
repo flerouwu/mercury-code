@@ -13,16 +13,16 @@ edition = "2021"
 tauri-build = { version = "2.0.0-alpha.6", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-alpha.10", features = [] }
+tauri = { version = "2.0.0-alpha.13", features = [] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tauri-plugin-app = "2.0.0-alpha.0"
-tauri-plugin-os = "2.0.0-alpha.0"
-tauri-plugin-shell = "2.0.0-alpha.0"
-tauri-plugin-window = "2.0.0-alpha.0"
-tauri-plugin-fs = "2.0.0-alpha.0"
-tauri-plugin-dialog = "2.0.0-alpha.0"
-tauri-plugin-store = "2.0.0-alpha.0"
+tauri-plugin-app = "2.0.0-alpha.2"
+tauri-plugin-os = "2.0.0-alpha.2"
+tauri-plugin-shell = "2.0.0-alpha.2"
+tauri-plugin-window = "2.0.0-alpha.2"
+tauri-plugin-fs = "2.0.0-alpha.2"
+tauri-plugin-dialog = "2.0.0-alpha.2"
+tauri-plugin-store = "2.0.0-alpha.2"
 uuid = { version = "1.4.1", features = ["v4", "fast-rng"] }
 
 [features]

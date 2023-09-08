@@ -9,6 +9,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { ScrollArea } from "../ui/scroll-area"
 import { useTheme } from "next-themes"
 import { useToast } from "../ui/use-toast"
+import { Slot } from "@radix-ui/react-slot"
 
 export interface EditorProps {
 	uuid: string // UUID
@@ -25,27 +26,13 @@ export function Editor({
 	content,
 	unsaved,
 }: EditorProps) {
-	const { toast } = useToast()
-
-	// #region Hotkeys
-	useHotkeys("ctrl+s", () => {
-		invoke("editors_save_current").catch((err) => {
-			toast({
-				title: "Error Saving Editor",
-				description: err,
-				variant: "destructive",
-			})
-		})
-	}, { preventDefault: true }, [])
-	// #endregion
-
 	// #region Language Detection
 	// TODO: Use regex? to detect language based on content, rather than file name.
 	const filename = path?.split("/").pop(); // Use pop() to get the last part of the path
 	const language = filename
 		? FILE_ASSOCIATIONS.find((assoc) =>
-				assoc.extensions.some((ext) => ext.test(filename))
-			)
+			assoc.extensions.some((ext) => ext.test(filename))
+		)
 		: undefined;
 
 	const extensions: Extension[] = []
@@ -73,7 +60,7 @@ export function Editor({
 	// #endregion
 
 	return (
-		<div className="flex flex-col w-full mb-96">
+		<div className="grid h-full grid-rows-2" style={{ gridTemplateRows: "1fr min-content" }}>
 			<ScrollArea>
 				<CodeMirror
 					value={content ?? undefined}

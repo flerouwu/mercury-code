@@ -1,7 +1,6 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
 
-import { fontMono, fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Titlebar } from "@/components/titlebar"
 import { StyleSwitcher } from "@/components/style-switcher"
@@ -15,6 +14,7 @@ interface ExamplesLayoutProps {
 }
 
 export default function MyApp({ children }: ExamplesLayoutProps) {
+
   return (
     <html lang="en" suppressHydrationWarning className="bg-black overflow-clip">
       <head />

@@ -22,13 +22,9 @@ import { AboutDialog } from "./about-dialog"
 import { TitlebarThemeModeToggle } from "./titlebar-theme-mode-toggle"
 import { Dialog, DialogTrigger } from "./ui/dialog"
 import { invoke } from "@tauri-apps/api"
+import { getCurrent } from "@tauri-apps/plugin-window"
 
 export function Titlebar() {
-  const closeWindow = useCallback(async () => {
-    const { appWindow } = await import("@tauri-apps/plugin-window")
-    appWindow.close()
-  }, [])
-
   return (
     <WindowTitlebar
     // controlsOrder="left"
@@ -66,7 +62,7 @@ export function Titlebar() {
               <MenubarItem onClick={() => invoke("close_folder")}>Close Folder</MenubarItem>
               <MenubarItem>Reload Project</MenubarItem>
               <MenubarSeparator />
-              <MenubarItem onClick={() => closeWindow()}>Quit Application</MenubarItem>
+              <MenubarItem onClick={() => getCurrent().close()}>Quit Application</MenubarItem>
             </MenubarContent>
 
             <AboutDialog />

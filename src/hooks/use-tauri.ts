@@ -74,21 +74,14 @@ export function useTauri<T>(props: UseTauriProps<T>): {
   const dispatchData = async (newData: T) => {
     if (props.setter != undefined) {
       useLog("useTauri[Frontend => Tauri](DispatchData)", "lime", `Dispatching ${props.setter.command}`)
-      const start = Date.now()
-
-      useLog("useTauri[TEST](DispatchData)", "red", `Data:`, data);
       await invoke(props.setter.command, props.setter.args != undefined ? props.setter.args(newData) : undefined)
-
-      useLog("useTauri[Frontend => Tauri](DispatchData)", "lime", `[SUCCESS] Dispatched! Took ${Date.now() - start}ms`)
     }
   }
 
   // Listener to update the data
   useEffect(() => {
     // Initial data
-    updateData().then(() => {
-      useLog("useTauri(InitialData)", "orange", data)
-    })
+    updateData()
 
     // Update Events
     if (props.updateEvent == undefined) return
@@ -101,11 +94,6 @@ export function useTauri<T>(props: UseTauriProps<T>): {
 
     return () => unlisten && unlisten()
   }, [])
-
-  // Test
-  useEffect(() => {
-    useLog("useTauri[TEST]()", "red", "Data was updated!", data)
-  }, [data])
 
   return { data, setData, updateData, dispatchData }
 }

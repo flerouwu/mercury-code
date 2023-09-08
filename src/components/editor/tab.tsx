@@ -32,8 +32,6 @@ export function EditorTab({
 		dispatchCurrent(null) // Dispatch to Tauri
 	}, [editors])
 
-	console.log(`EditorTab(${editor.uuid}): `, editor)
-
 	return (
 		<Tooltip key={editor.uuid}>
 			<TooltipTrigger>

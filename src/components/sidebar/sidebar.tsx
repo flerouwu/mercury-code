@@ -1,14 +1,12 @@
 "use client"
 
-import { FilePlus, Files, FolderPlus, GitBranch, LucideIcon, Settings2, UserCircle2 } from "lucide-react"
+import { Files, GitBranch, LucideIcon, Settings2, UserCircle2 } from "lucide-react"
 import React, { useState } from "react"
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "../ui/navigation-menu"
 import { Button } from "../ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { cn } from "@/lib/utils"
-import { invoke } from "@tauri-apps/api/tauri"
 import { FilesSidebar, FilesSidebar_NewFile, FilesSidebar_NewFolder } from "./files"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 
 interface SidebarMenu {
   top: SidebarItem[]
@@ -31,8 +29,8 @@ const items: SidebarMenu = {
       name: "Files",
       content: <FilesSidebar />,
       additionalItems: [
-        <FilesSidebar_NewFile />,
-        <FilesSidebar_NewFolder />
+        <FilesSidebar_NewFile key="files_newfile" />,
+        <FilesSidebar_NewFolder key="files_newfolder" />
       ]
     },
     {

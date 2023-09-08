@@ -7,14 +7,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { useToast } from "@/components/ui/use-toast"
 import { tauriCommands, useTauri } from "@/hooks/use-tauri"
-import { invoke } from "@tauri-apps/api/tauri"
+import { invoke } from "@tauri-apps/api"
 import { Plus } from "lucide-react"
-import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export default function App() {
   const { data: editors, setData: setEditors, updateData: updateEditors, dispatchData: dispatchEditors } = useTauri<EditorProps[]>(tauriCommands.allEditors)
   const { data: current, setData: setCurrent, updateData: updateCurrent, dispatchData: dispatchCurrent } = useTauri<string | null>(tauriCommands.currentEditor)
   const { toast } = useToast()
+
+  // #region Hotkeys
+  useHotkeys("ctrl+s", () => {
+    if (current == null) return
+
+    invoke("editors_save_editor", { uuid: current }).catch((err) => {
+      toast({
+        title: "Error Saving Editor",
+        description: err,
+        variant: "destructive",
+      })
+    })
+  }, { preventDefault: true }, [])
+  // #endregion
 
   return (
     <TooltipProvider>

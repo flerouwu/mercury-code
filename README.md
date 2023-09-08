@@ -21,6 +21,7 @@ Pull Requests are currently not going to be accepted.
 
 ## Todo
 - [ ] Update github workflows to gitlab format
+- [ ] Move frontend to pure react? (nextjs is kinda overkill)
 
 ## Bugs
 - Unable to save files that were not on disk previously. (Not Implemented)
